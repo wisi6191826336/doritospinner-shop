@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dortio Shop</title>
+<style>
+body{font-family:Arial,sans-serif; background:#f4f7fb; color:#111; display:flex; justify-content:center; padding:20px;}
+.panel{background:#fff; padding:20px; border-radius:12px; box-shadow:0 10px 20px rgba(0,0,0,0.1); max-width:700px; width:100%;}
+h1{margin-top:0; text-align:center;}
+.button-row{display:flex; justify-content:space-between; margin-bottom:20px;}
+.button-row button{flex:1; margin:0 5px; padding:10px; font-weight:bold; border:none; border-radius:8px; cursor:pointer; background:#0b76ff; color:#fff;}
+.button-row button.active{background:#095acc;}
+.row{margin:12px 0; display:flex; flex-direction:column;}
+label{margin-bottom:4px; font-weight:bold;}
+select, input[type="number"], button{padding:8px; border-radius:6px; border:1px solid #ccc; width:100%; margin-top:4px;}
+button:hover{opacity:0.9;}
+.price{margin-top:10px; font-weight:bold; font-size:16px;}
+.cart{margin-top:20px; border-top:1px solid #ccc; padding-top:10px;}
+.cart-item{margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;}
+.cart-item button{background:red; padding:2px 6px; font-size:12px; color:#fff; border:none; cursor:pointer;}
+.total{margin-top:10px; font-size:16px; font-weight:bold;}
+img.preview{width:200px; height:auto; display:block; margin:10px auto; border:1px solid #ccc; border-radius:8px;}
+img#motorImg{width:100%; border-radius:8px; margin-top:10px;}
+.tab-section{display:none;}
+.tab-section.active{display:block;}
+</style>
+</head>
+<body>
+<div class="panel">
+<h1>Dortio Shop</h1>
+
+<!-- Haupt-Kategorie Buttons -->
+<div class="button-row">
+  <button id="btnSpinner" class="active">Spinner</button>
+  <button id="btnMotor">Wankelmotor</button>
+  <button id="btnExtras">Extras</button>
+</div>
+
+<!-- Spinner Sektion -->
+<div id="spinnerSection" class="tab-section active">
+  <img class="preview" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%2Fid%2FOIP.aN3vEdyaLLhxNPd1Axn-2QHaHa%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=8befe3c25cfdcde7d92687f634b6a8cffb5226094fa166b0af71f50caafd3a7c&ipo=images" alt="Spinner Vorschau">
+  <div class="row">
+    <label for="material">Material</label>
+    <select id="material">
+      <option value="gold" data-price="100">Gold (€100/Stück)</option>
+      <option value="aluminium" data-price="20">Aluminium (€20/Stück)</option>
+      <option value="titan" data-price="50">Titan (€50/Stück)</option>
+      <option value="stahl" data-price="15">Stahl (€15/Stück)</option>
+      <option value="kupfer" data-price="25">Kupfer (€25/Stück)</option>
+    </select>
+  </div>
+  <div class="row">
+    <label for="finish">Beschichtung / Finish</label>
+    <select id="finish">
+      <option value="matte">Matt</option>
+      <option value="gloss">Glänzend (+€5)</option>
+      <option value="chrom">Chrom (+€15)</option>
+      <option value="anodisiert">Anodisiert (+€20)</option>
+    </select>
+  </div>
+  <div class="row">
+    <label for="bearing">Kugellager</label>
+    <select id="bearing">
+      <option value="standard">Standard</option>
+      <option value="premium">Premium (+€10)</option>
+      <option value="ceramic">Keramik (+€25)</option>
+    </select>
+  </div>
+  <div class="row">
+    <label for="quantity">Stückzahl</label>
+    <input type="number" id="quantity" min="1" value="1">
+  </div>
+  <div class="price" id="spinnerPrice">Preis: €0.00</div>
+  <button id="addCartBtn">In den Warenkorb</button>
+</div>
+
+<!-- Wankelmotor Sektion -->
+<div id="motorSection" class="tab-section">
+  <h2>Fertiger Wankelmotor</h2>
+  <img id="motorImg" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.TaW0C8aBL8So2t-4BzgTzAHaEK%3Fpid%3DApi%26ucfimg%3D1&f=1&ipt=cc5e84cbc187dbc04d1b28d2a1fe4f9c493b6cb0fb3f8baf65db3dd999588ba1&ipo=images" alt="Wankelmotor Bild">
+  <div class="row">
+    <label for="quantityMotor">Stückzahl</label>
+    <input type="number" id="quantityMotor" min="1" value="1">
+  </div>
+  <div class="price" id="motorPrice">Preis: €4.000</div>
+  <button id="addMotorBtn">In den Warenkorb</button>
+</div>
+
+<!-- Extras Sektion -->
+<div id="extrasSection" class="tab-section">
+  <div class="row">
+    <label for="extraSelect">Extra auswählen</label>
+    <select id="extraSelect">
+      <option value="ledertasche" data-price="50" data-unit="Stück">Leder-Tasche (€50/Stück)</option>
+      <option value="premiumbenzin" data-price="7" data-unit="Liter">Premium Benzin (€7/Liter)</option>
+      <option value="pflegekit" data-price="30" data-unit="Stück">Pflegekit (€30/Stück)</option>
+    </select>
+  </div>
+  <div class="row">
+    <label for="extraQty">Menge</label>
+    <input type="number" id="extraQty" min="1" value="1">
+  </div>
+  <div class="row">
+    <div class="price" id="extraPrice">Preis: €0.00</div>
+  </div>
+  <div class="row">
+    <button id="addExtraBtn">In den Warenkorb</button>
+  </div>
+</div>
+
+<!-- Warenkorb -->
+<div class="cart">
+  <h2>Warenkorb</h2>
+  <div id="cartItems"></div>
+  <div class="total" id="cartTotal">Gesamt: €0.00</div>
+
+  <div class="row">
+    <label for="payment">Zahlungsart</label>
+    <select id="payment">
+      <option value="paypal">PayPal</option>
+      <option value="applepay">Apple Pay</option>
+      <option value="googlepay">Google Pay</option>
+    </select>
+  </div>
+  <button id="checkoutBtn">Zur Kasse</button>
+  <div id="paymentMessage" class="price" style="color:green;"></div>
+</div>
+
+<script>
+// Tab Buttons Logik
+const btnSpinner = document.getElementById('btnSpinner');
+const btnMotor = document.getElementById('btnMotor');
+const btnExtras = document.getElementById('btnExtras');
+
+const spinnerSection = document.getElementById('spinnerSection');
+const motorSection = document.getElementById('motorSection');
+const extrasSection = document.getElementById('extrasSection');
+
+function showSection(section){
+  spinnerSection.classList.remove('active');
+  motorSection.classList.remove('active');
+  extrasSection.classList.remove('active');
+  btnSpinner.classList.remove('active');
+  btnMotor.classList.remove('active');
+  btnExtras.classList.remove('active');
+
+  section.classList.add('active');
+  if(section===spinnerSection) btnSpinner.classList.add('active');
+  if(section===motorSection) btnMotor.classList.add('active');
+  if(section===extrasSection) btnExtras.classList.add('active');
+}
+
+btnSpinner.addEventListener('click', ()=>showSection(spinnerSection));
+btnMotor.addEventListener('click', ()=>showSection(motorSection));
+btnExtras.addEventListener('click', ()=>showSection(extrasSection));
+
+// Preisberechnung Spinner
+const materialEl = document.getElementById('material');
+const finishEl = document.getElementById('finish');
+const bearingEl = document.getElementById('bearing');
+const quantityEl = document.getElementById('quantity');
+const spinnerPriceEl = document.getElementById('spinnerPrice');
+
+function calculateSpinnerPrice(){
+  const qty = parseInt(quantityEl.value);
+  const selectedMaterial = materialEl.options[materialEl.selectedIndex];
+  const materialPrice = parseFloat(selectedMaterial.dataset.price);
+  let price = materialPrice;
+
+  const finish = finishEl.value;
+  const bearing = bearingEl.value;
+
+  if(finish === 'gloss') price += 5;
+  if(finish === 'chrom') price += 15;
+  if(finish === 'anodisiert') price += 20;
+
+  if(bearing === 'premium') price += 10;
+  if(bearing === 'ceramic') price += 25;
+
+  price *= qty;
+  spinnerPriceEl.textContent = `Preis: €${price.toFixed(2)}`;
+  return price;
+}
+
+materialEl.addEventListener('change', calculateSpinnerPrice);
+finishEl.addEventListener('change', calculateSpinnerPrice);
+bearingEl.addEventListener('change', calculateSpinnerPrice);
+quantityEl.addEventListener('input', calculateSpinnerPrice);
+calculateSpinnerPrice();
+
+// Preisberechnung Motor
+const quantityMotorEl = document.getElementById('quantityMotor');
+const motorPriceEl = document.getElementById('motorPrice');
+
+function calculateMotorPrice(){
+  const qty = parseInt(quantityMotorEl.value);
+  const price = 4000 * qty;
+  motorPriceEl.textContent = `Preis: €${price.toLocaleString('de-DE')}`;
+  return price;
+}
+quantityMotorEl.addEventListener('input', calculateMotorPrice);
+calculateMotorPrice();
+
+// Extras Preisberechnung
+const extraSelect = document.getElementById('extraSelect');
+const extraQty = document.getElementById('extraQty');
+const extraPriceEl = document.getElementById('extraPrice');
+
+function calculateExtraPrice(){
+  const selected = extraSelect.options[extraSelect.selectedIndex];
+  const pricePerUnit = parseFloat(selected.dataset.price);
+  const qty = parseFloat(extraQty.value);
+  const totalPrice = pricePerUnit * qty;
+  let unitLabel = selected.dataset.unit;
+  extraPriceEl.textContent = `Preis: €${totalPrice.toFixed(2)} (${qty} ${unitLabel})`;
+  return totalPrice;
+}
+extraSelect.addEventListener('change', calculateExtraPrice);
+extraQty.addEventListener('input', calculateExtraPrice);
+calculateExtraPrice();
+
+// Warenkorb
+const cartItemsEl = document.getElementById('cartItems');
+const cartTotalEl = document.getElementById('cartTotal');
+let cart = [];
+
+function renderCart(){
+  cartItemsEl.innerHTML = '';
+  let total = 0;
+  cart.forEach((item, idx)=>{
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    let desc = `${item.name}`;
+    if(item.material){
+      desc += ` | ${item.material} | ${item.finish} | ${item.bearing}`;
+    }
+    desc += ` | ${item.quantity} Stück | €${(item.unitPrice*item.quantity).toFixed(2)}`;
+    div.textContent = desc;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'X';
+    removeBtn.addEventListener('click', ()=>{
+      cart.splice(idx,1);
+      renderCart();
+    });
+    div.appendChild(removeBtn);
+    cartItemsEl.appendChild(div);
+    total += item.unitPrice * item.quantity;
+  });
+  cartTotalEl.textContent = `Gesamt: €${total.toFixed(2)}`;
+}
+
+// Buttons Warenkorb
+document.getElementById('addCartBtn').addEventListener('click', ()=>{
+  const qty = parseInt(quantityEl.value);
+  const unitPrice = calculateSpinnerPrice()/qty;
+  cart.push({
+    name: 'Eigenbau‑Spinner',
+    material: materialEl.value,
+    finish: finishEl.value,
+    bearing: bearingEl.value,
+    quantity: qty,
+    unitPrice: unitPrice
+  });
+  renderCart();
+});
+
+document.getElementById('addMotorBtn').addEventListener('click', ()=>{
+  const qty = parseInt(quantityMotorEl.value);
+  cart.push({
+    name: 'Fertiger Wankelmotor',
+    quantity: qty,
+    unitPrice: 4000
+  });
+  renderCart();
+});
+
+// Extras hinzufügen in Warenkorb
+const addExtraBtn = document.getElementById('addExtraBtn');
+addExtraBtn.addEventListener('click', ()=>{
+  const selected = extraSelect.options[extraSelect.selectedIndex];
+  const qty = parseFloat(extraQty.value);
+  const price = parseFloat(selected.dataset.price);
+  cart.push({
+    name: selected.text,
+    quantity: qty,
+    unitPrice: price
+  });
+  renderCart();
+});
+
+// Checkout / Zahlungslogik
+const checkoutBtn = document.getElementById('checkoutBtn');
+const paymentEl = document.getElementById('payment');
+const paymentMessage = document.getElementById('paymentMessage');
+
+checkoutBtn.addEventListener('click', ()=>{
+  if(cart.length === 0){
+    paymentMessage.style.color = 'red';
+    paymentMessage.textContent = 'Warenkorb ist leer!';
+    return;
+  }
+  const method = paymentEl.value;
+  let methodName = '';
+  if(method === 'paypal') methodName = 'PayPal';
+  if(method === 'applepay') methodName = 'Apple Pay';
+  if(method === 'googlepay') methodName = 'Google Pay';
+  
+  const total = cart.reduce((sum,item)=>sum + item.unitPrice*item.quantity,0).toFixed(2);
+  
+  paymentMessage.style.color = 'green';
+  paymentMessage.textContent = `Vielen Dank! Sie haben €${total} via ${methodName} bezahlt.`;
+  
+  cart = [];
+  renderCart();
+});
+</script>
+</body>
+</html>
